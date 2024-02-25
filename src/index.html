@@ -1,18 +1,76 @@
-<!-- index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Hello, World!</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome!</title>
+    <link rel="stylesheet" href="/src/styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Hello, World!</h1>
-        <form action="/search" method="get">
-            <label for="birthday_date">Geburtsdatum (MM-DD):</label>
-            <input type="text" id="birthday_date" name="date" placeholder="MM-DD" required>
-            <button type="submit">Suchen</button>
-        </form>
+        <h1>Welcome to our page!</h1>
+        <p>This is a simple HTML page served by FastAPI.</p>
+        <input type="number" id="dayInput" placeholder="Day (1-31)">
+        <input type="number" id="monthInput" placeholder="Month (1-12)">
+        <button id="queryButton">Fetch Data</button>
+        <button id="healthButton">Check Health</button> 
+        <div id="result"></div>
     </div>
+
+
+    <script>
+        async function fetchData() {
+            const month = document.getElementById("monthInput").value;
+            const day = document.getElementById("dayInput").value;
+
+            const response = await fetch(`/api/v1/get_data?month=${month}&day=${day}`);
+            const data = await response.json();
+
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = '';
+
+            if(response.ok) {
+
+                if (data.length > 0) {
+                    const table = document.createElement("table");
+                    const headerRow = table.insertRow();
+                    Object.keys(data[0]).forEach(key => {
+                        const th = document.createElement("th");
+                        th.textContent = key;
+                        headerRow.appendChild(th);
+                    });
+
+                    data.forEach(item => {
+                        
+                        // Erhöhe den Monatswert um eins
+                        item.month = parseInt(item.month) + 1;
+
+                        const row = table.insertRow();
+                        Object.values(item).forEach(value => {
+                            const cell = row.insertCell();
+                            cell.textContent = value;
+                        });
+                    });
+
+                    resultDiv.appendChild(table);
+                } else {
+                    resultDiv.textContent = "No data found";
+                }
+            } else {
+                resultDiv.textContent = "Error: " + data.detail;
+        }
+    }
+
+    async function checkHealth() {
+            const response = await fetch("/health");
+            const data = await response.json();
+
+            // Zeige eine Popup-Nachricht mit dem Status an
+            alert(data.status);
+        }
+
+        document.getElementById("queryButton").addEventListener("click", fetchData);
+        document.getElementById("healthButton").addEventListener("click", checkHealth); // Füge den Eventlistener für den Health-Button hinzu
+    </script>
 </body>
 </html>
