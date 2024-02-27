@@ -3,6 +3,7 @@ import os
 from fastapi.staticfiles import StaticFiles
 import requests
 from fastapi.responses import HTMLResponse
+from config import COUCHDB_HOST, COUCHDB_PORT, COUCHDB_USERNAME, COUCHDB_PASSWORD
 
 app = FastAPI()
 
@@ -26,10 +27,10 @@ async def read_root():
     return html_content
 
 
-# Konfiguration aus Umgebungsvariablen laden
-COUCHDB_URL = os.getenv('COUCHDB_URL', 'http://localhost:5984')
-COUCHDB_USERNAME = os.getenv('COUCHDB_USERNAME', 'admin')
-COUCHDB_PASSWORD = os.getenv('COUCHDB_PASSWORD', 'student')
+# Konfiguration für die Verbindung zur CouchDB
+URL = os.getenv('COUCHDB_URL', f'http://{COUCHDB_HOST}:{COUCHDB_PORT}')
+AUTH_USERNAME = os.getenv('COUCHDB_USERNAME', COUCHDB_USERNAME)
+AUTH_PASSWORD = os.getenv('COUCHDB_PASSWORD', COUCHDB_PASSWORD)
 
 # Route für die Suche nach Geburtstagen
 @app.get('/api/v1/get_data')
@@ -50,9 +51,9 @@ async def get_data(month: int = Query(..., description="Month (1-12)", ge=1, le=
     # POST Request an CouchDB senden
     try:
         response = requests.post(
-            f'{COUCHDB_URL}/birthday_db/_find',
+            f'{URL}/birthday_db/_find',
             json=mango_query,
-            auth=(COUCHDB_USERNAME, COUCHDB_PASSWORD),
+            auth=(AUTH_USERNAME, AUTH_PASSWORD),
             headers={"Content-Type": "application/json"},
             timeout=2  # Timeout von 5 Sekunden setzen
         )
@@ -63,7 +64,7 @@ async def get_data(month: int = Query(..., description="Month (1-12)", ge=1, le=
             if response.json()['docs']:
                 return response.json()['docs']
             else:
-                raise HTTPException(status_code=404, detail="No data found")
+                raise HTTPException(status_code=204, detail="No data found")
         elif response.status_code == 401:  # Ungültige Anmeldeinformationen
             raise HTTPException(status_code=401, detail="Invalid credentials")
         else:

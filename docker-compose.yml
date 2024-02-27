@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  couchdb:
+    image: my-couchdb-app
+    build:
+      context: ./Couch-DB/ContainerImage
+      dockerfile: Dockerfile
+    ports:
+      - "5984:5984"
+    container_name: couchdb
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=student
+    networks:
+      - mynetwork
+
+  fastapi:
+    image: my-fastapi-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - COUCHDB_URL=http://couchdb:5984
+      - COUCHDB_USERNAME=admin
+      - COUCHDB_PASSWORD=student
+    networks:
+      - mynetwork
+
+
+networks:
+  mynetwork:
+    driver: bridge
