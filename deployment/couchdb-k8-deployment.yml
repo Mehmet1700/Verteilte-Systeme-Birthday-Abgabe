@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: couchdb-k8-deployment
+  labels:
+    app: couchdb-k8
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: couchdb-k8
+  template:
+    metadata:
+      labels:
+        app: couchdb-k8
+    spec:
+      containers:
+      - name: my-couchdb-app-container
+        image: my-couchdb-app:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5984
+

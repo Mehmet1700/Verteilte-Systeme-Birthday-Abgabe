@@ -1,44 +1,53 @@
+/* Setze die Standardschriftart und entferne den Standardabstand und die Standardfüllung für den gesamten Körper */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
+/* Zentriere den Container horizontal, lege die maximale Breite auf 800px fest und füge einen Rand und abgerundete Ecken hinzu */
 .container {
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    display: flex; 
-    flex-direction: column; 
-    align-items: center;
+    display: flex; /* Verwende Flexbox für die Ausrichtung der Elemente */
+    flex-direction: column; /* Die Kinder werden in einer Spalte angeordnet */
+    align-items: center; /* Zentriere die Kinder horizontal */
 }
 
+/* Füge einen Abstand zwischen den Elementen im Container hinzu */
 .container > * {
-    margin: 5px; /* Abstand zwischen den Elementen hinzufügen */
+    margin: 5px;
 }
+
+/* Definiere die Breite für die Eingabefelder und Buttons */
 input[type="number"],
 button {
-    width: 200px; /* Breite der Eingabefelder und Buttons festlegen */
+    width: 200px;
 }
 
+/* Stil für die Überschrift */
 h1 {
     color: #333;
 }
 
+/* Stil für die Tabelle */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
 
+/* Stil für Tabellenkopf und Tabellenzellen */
 table th, table td {
     padding: 10px;
     border: 1px solid #ccc;
     text-align: left;
 }
 
+/* Stil für den Abfrage-Button */
 #queryButton {
     background-color: #007bff;
     color: #fff;
@@ -49,10 +58,12 @@ table th, table td {
     margin-top: 20px;
 }
 
+/* Stil für den Button beim Hovern */
 #queryButton:hover {
     background-color: #0056b3;
 }
 
+/* Stil für den Health-Button */
 #healthButton {
     background-color: #28a745;
     color: #fff;
@@ -63,6 +74,7 @@ table th, table td {
     margin-top: 20px;
 }
 
+/* Stil für den Health-Button beim Hovern */
 #healthButton:hover {
     background-color: #218838; 
 }

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-k8-service
+  labels:
+    app: fastapi-k8
+spec:
+  selector:
+    app: fastapi-k8
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000
+    nodePort: 30000
+  type: NodePort

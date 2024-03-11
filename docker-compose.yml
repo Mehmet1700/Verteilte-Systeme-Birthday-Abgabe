@@ -22,10 +22,13 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
-    environment:
-      - COUCHDB_URL=http://couchdb:5984
+    container_name: fastapi
+    environment: # Setze Umgebungsvariablen für die FastAPI-App außerhalb des Containers, um die 12-Faktor-App-Prinzipien zu erfüllen
+      - COUCHDB_HOST=couchdb
+      - COUCHDB_PORT=5984
       - COUCHDB_USERNAME=admin
       - COUCHDB_PASSWORD=student
+
     networks:
       - mynetwork
 

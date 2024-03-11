@@ -1,14 +1,27 @@
+# Importieren der erforderlichen Bibliotheken
 from fastapi import FastAPI, HTTPException, Query
 import os
 from fastapi.staticfiles import StaticFiles
 import requests
 from fastapi.responses import HTMLResponse
-from config import COUCHDB_HOST, COUCHDB_PORT, COUCHDB_USERNAME, COUCHDB_PASSWORD
+
+
+#Da wir die Konfigurationsvariablen in Docker und Kubernetes extern holen, müssen wir eine Exception werfen, da die Variablen nicht aus der config.py-Datei importiert werden können.
+try: 
+    from config import COUCHDB_HOST, COUCHDB_PORT, COUCHDB_USERNAME, COUCHDB_PASSWORD
+except ImportError as e:
+    # Falls das Importieren fehlschlägt, greife auf Umgebungsvariablen zurück
+    COUCHDB_HOST = os.getenv('COUCHDB_HOST')
+    COUCHDB_PORT = os.getenv('COUCHDB_PORT')
+    COUCHDB_USERNAME = os.getenv('COUCHDB_USERNAME')
+    COUCHDB_PASSWORD = os.getenv('COUCHDB_PASSWORD')
+    # Debugging-Anweisung
+    print( COUCHDB_HOST, COUCHDB_PORT, COUCHDB_USERNAME, COUCHDB_PASSWORD)
 
 app = FastAPI()
 
+# Statische Dateien (z. B. CSS, JavaScript) in FastAPI einbinden
 app.mount("/src", StaticFiles(directory="src"), name="src")
-
 
 # Pfad zur HTML-Datei
 html_file_path = "src/index.html"
@@ -16,6 +29,7 @@ html_file_path = "src/index.html"
 # Funktion zum Lesen des Inhalts der HTML-Datei
 def read_html_file():
     with open(html_file_path, "r") as file:
+        print(COUCHDB_HOST, COUCHDB_PORT, COUCHDB_USERNAME, COUCHDB_PASSWORD)
         return file.read()
 
 # HTML-Inhalt für die Startseite

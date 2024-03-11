@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-k8-deployment
+  labels:
+    app: fastapi-k8
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastapi-k8
+  template:
+    metadata:
+      labels:
+        app: fastapi-k8
+    spec:
+      containers:
+      - name: fastapi-k8-container
+        image: my-fastapi-app:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        env:
+        - name: COUCHDB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: fastapi-k8-secret
+              key: COUCHDB_USERNAME
+        - name: COUCHDB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: fastapi-k8-secret
+              key: COUCHDB_PASSWORD
+        - name: COUCHDB_URL
+          valueFrom:
+            configMapKeyRef:
+              name: fastapi-k8-configmap
+              key: COUCHDB_URL
+        - name: COUCHDB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: fastapi-k8-configmap
+              key: COUCHDB_HOST
+        - name: COUCHDB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: fastapi-k8-configmap
+              key: COUCHDB_PORT

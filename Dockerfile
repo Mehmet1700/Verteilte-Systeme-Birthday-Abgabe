@@ -10,8 +10,9 @@ COPY requirements.txt .
 # Installieren der Abhängigkeiten
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Kopieren des gesamten Projektverzeichnisses in das Arbeitsverzeichnis
-COPY . .
+# Kopieren des src Ordners in das Arbeitsverzeichnis, damit z.B. die config.py in das Image kopiert wird
+#12 Factor Regeln sollen umgesetzt werden, sodass die Konfiguration über Umgebungsvariablen erfolgt
+COPY src ./src
 
 #Exponieren des Ports, auf dem der FastAPI-Server läuft
 EXPOSE 8000

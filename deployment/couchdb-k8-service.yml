@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: couchdb-k8-service
+  labels:
+    app: couchdb-k8
+spec:
+  type: NodePort
+  ports:
+  - port: 5984
+  selector:
+    app: couchdb-k8
