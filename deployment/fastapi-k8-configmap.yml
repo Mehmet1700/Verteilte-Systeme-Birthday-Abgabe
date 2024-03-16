@@ -1,10 +1,10 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: fastapi-k8-configmap
-  labels:
-    app: fastapi-k8
-data:
-  COUCHDB_URL: "http://couchdb-k8-service:5984"
-  COUCHDB_HOST: "couchdb"
-  COUCHDB_PORT: "5984"
+apiVersion: v1                    # API-Version des Objekts (v1 für Kubernetes API-Version 1)
+kind: ConfigMap                   # Art des Objekts (ConfigMap)
+metadata:                         # Metadaten des Objekts
+  name: fastapi-k8-configmap      # Name der ConfigMap
+  labels:                         # Labels, um die ConfigMap zu identifizieren
+    app: fastapi-k8               # Label für die Anwendung
+data:                             # Datenbereich, der die Konfigurationsdaten enthält
+  COUCHDB_URL: "http://couchdb-k8-service:5984"  # URL für die CouchDB-Verbindung
+  COUCHDB_HOST: "couchdb"         # Hostname für die CouchDB-Verbindung
+  COUCHDB_PORT: "5984"             # Port für die CouchDB-Verbindung

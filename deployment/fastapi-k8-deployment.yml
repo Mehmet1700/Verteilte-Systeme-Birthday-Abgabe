@@ -1,48 +1,55 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: fastapi-k8-deployment
-  labels:
-    app: fastapi-k8
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: fastapi-k8
-  template:
-    metadata:
-      labels:
-        app: fastapi-k8
-    spec:
-      containers:
-      - name: fastapi-k8-container
-        image: my-fastapi-app:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 8000
-        env:
-        - name: COUCHDB_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: fastapi-k8-secret
-              key: COUCHDB_USERNAME
-        - name: COUCHDB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: fastapi-k8-secret
-              key: COUCHDB_PASSWORD
-        - name: COUCHDB_URL
-          valueFrom:
-            configMapKeyRef:
-              name: fastapi-k8-configmap
-              key: COUCHDB_URL
-        - name: COUCHDB_HOST
-          valueFrom:
-            configMapKeyRef:
-              name: fastapi-k8-configmap
-              key: COUCHDB_HOST
-        - name: COUCHDB_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: fastapi-k8-configmap
-              key: COUCHDB_PORT
+apiVersion: apps/v1  # API-Version des Objekts
+kind: Deployment     # Art des Objekts (Deployment)
+metadata:            # Metadaten des Objekts
+  name: fastapi-k8-deployment  # Name des Deployments
+  labels:            # Labels, um das Deployment zu identifizieren
+    app: fastapi-k8  # Label für die Anwendung
+spec:                # Spezifikation des Deployments
+  replicas: 1        # Anzahl der Replikate, die erstellt werden sollen
+  selector:          # Selektor, um die Replikate zu identifizieren
+    matchLabels:     # Labels, nach denen die Pods ausgewählt werden
+      app: fastapi-k8  # Label für die Anwendung
+  template:          # Vorlage für die Pods
+    metadata:        # Metadaten der Pod-Vorlage
+      labels:        # Labels für die Pods
+        app: fastapi-k8  # Label für die Anwendung
+    spec:            # Spezifikation der Pod-Vorlage
+      containers:    # Container-Spezifikation für die Pods
+      - name: fastapi-k8-container  # Name des Containers
+        image: my-fastapi-app:latest  # Docker-Image für den Container
+        imagePullPolicy: IfNotPresent  # Pull-Policy für das Image
+        ports:       # Port-Konfiguration für den Container
+        - containerPort: 8000  # Der Port, auf dem der Container lauscht
+        env:         # Umgebungsvariablen für den Container
+        - name: COUCHDB_USERNAME  # Name der Umgebungsvariable
+          valueFrom:              # Quelle des Werts der Umgebungsvariable
+            secretKeyRef:        # Verweis auf einen Wert in einem Secret
+              name: fastapi-k8-secret  # Name des Secrets
+              key: COUCHDB_USERNAME    # Schlüssel im Secret
+        - name: COUCHDB_PASSWORD        # Name der Umgebungsvariable
+          valueFrom:                    # Quelle des Werts der Umgebungsvariable
+            secretKeyRef:              # Verweis auf einen Wert in einem Secret
+              name: fastapi-k8-secret  # Name des Secrets
+              key: COUCHDB_PASSWORD    # Schlüssel im Secret
+        - name: COUCHDB_URL           # Name der Umgebungsvariable
+          valueFrom:                  # Quelle des Werts der Umgebungsvariable
+            configMapKeyRef:         # Verweis auf einen Wert in einer ConfigMap
+              name: fastapi-k8-configmap  # Name der ConfigMap
+              key: COUCHDB_URL       # Schlüssel in der ConfigMap
+        - name: COUCHDB_HOST          # Name der Umgebungsvariable
+          valueFrom:                  # Quelle des Werts der Umgebungsvariable
+            configMapKeyRef:         # Verweis auf einen Wert in einer ConfigMap
+              name: fastapi-k8-configmap  # Name der ConfigMap
+              key: COUCHDB_HOST      # Schlüssel in der ConfigMap
+        - name: COUCHDB_PORT          # Name der Umgebungsvariable
+          valueFrom:                  # Quelle des Werts der Umgebungsvariable
+            configMapKeyRef:         # Verweis auf einen Wert in einer ConfigMap
+              name: fastapi-k8-configmap  # Name der ConfigMap
+              key: COUCHDB_PORT      # Schlüssel in der ConfigMap
+        readinessProbe:               # Readiness Probe für den Container
+          httpGet:                    # HTTP-Get-Anforderung für die Probe
+            path: /health            # Pfad für den Health-Check
+            port: 8000               # Port für den Health-Check
+          initialDelaySeconds: 5     # Verzögerung vor dem Start der Probe
+          periodSeconds: 5           # Intervall zwischen Probe-Checks
+          timeoutSeconds: 5          # Zeitüberschreitung für den Probe-Check

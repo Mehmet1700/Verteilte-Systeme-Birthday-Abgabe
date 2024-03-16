@@ -1,12 +1,12 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: couchdb-k8-service
-  labels:
-    app: couchdb-k8
-spec:
-  type: NodePort
-  ports:
-  - port: 5984
-  selector:
-    app: couchdb-k8
+apiVersion: v1                   # API-Version des Objekts (v1 für Kubernetes API-Version 1)
+kind: Service                    # Art des Objekts (Service)
+metadata:                        # Metadaten des Objekts
+  name: couchdb-k8-service       # Name des Services
+  labels:                        # Labels, um den Service zu identifizieren
+    app: couchdb-k8              # Label für die Anwendung
+spec:                            # Spezifikation des Services
+  type: NodePort                 # Typ des Services (NodePort bedeutet, dass der Service über einen Port auf jedem Kubernetes-Knoten zugänglich ist)
+  ports:                         # Port-Konfiguration für den Service
+  - port: 5984                   # Port des Services (auf den der Service von außen zugreift)
+  selector:                      # Selektor, um die Pods zu identifizieren, auf die der Service verweisen soll
+    app: couchdb-k8              # Label für die Anwendung

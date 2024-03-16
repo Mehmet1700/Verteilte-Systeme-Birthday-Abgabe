@@ -1,38 +1,49 @@
 version: '3.8'
 
 services:
+  # CouchDB Container mit der Datenbank
   couchdb:
+  # Verwende das eigene Docker-Image
     image: my-couchdb-app
+    # Baue das Docker-Image aus dem Verzeichnis "Couch-DB/ContainerImage"
     build:
+      # Verwende das Verzeichnis "Couch-DB/ContainerImage"
       context: ./Couch-DB/ContainerImage
+      # Verwende das Dockerfile im Verzeichnis "Couch-DB/ContainerImage"
       dockerfile: Dockerfile
+    # Verbinde den Port 5984 des Containers mit dem Port 5984 des Hosts
     ports:
       - "5984:5984"
+      # Benenne den Container
     container_name: couchdb
-    environment:
-      - COUCHDB_USER=admin
-      - COUCHDB_PASSWORD=student
+    env_file: .env # Verwende die .env-Datei für Umgebungsvariablen
+    # Verbinde den Container mit dem Netzwerk "mynetwork"
     networks:
       - mynetwork
 
+  # FastAPI Container mit der Webanwendung
   fastapi:
+    # Verwende das eigene Docker-Image
     image: my-fastapi-app
+    # Baue das Docker-Image aus dem aktuellen Verzeichnis
     build:
+      # Verwende das aktuelle Verzeichnis
       context: .
+      # Verwende das Dockerfile im aktuellen Verzeichnis
       dockerfile: Dockerfile
+    # Verbinde den Port 8000 des Containers mit dem Port 8000 des Hosts
     ports:
       - "8000:8000"
+    # Benenne den Container
     container_name: fastapi
-    environment: # Setze Umgebungsvariablen für die FastAPI-App außerhalb des Containers, um die 12-Faktor-App-Prinzipien zu erfüllen
-      - COUCHDB_HOST=couchdb
-      - COUCHDB_PORT=5984
-      - COUCHDB_USERNAME=admin
-      - COUCHDB_PASSWORD=student
-
+    env_file: .env # Verwende die .env-Datei für Umgebungsvariablen
+    # Verbinde den Container mit dem Netzwerk "mynetwork"
     networks:
       - mynetwork
 
-
+# Definiere das Netzwerk "mynetwork"
 networks:
+# Definiere das Netzwerk "mynetwork" als Bridge-Netzwerk
   mynetwork:
+  # Verwende den Treiber "bridge" für das Netzwerk
     driver: bridge

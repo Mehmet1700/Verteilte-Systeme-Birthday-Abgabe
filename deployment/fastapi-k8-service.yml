@@ -1,15 +1,15 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: fastapi-k8-service
-  labels:
-    app: fastapi-k8
-spec:
-  selector:
-    app: fastapi-k8
-  ports:
-  - protocol: TCP
-    port: 8000
-    targetPort: 8000
-    nodePort: 30000
-  type: NodePort
+apiVersion: v1                    # API-Version des Objekts (v1 für Kubernetes API-Version 1)
+kind: Service                     # Art des Objekts (Service)
+metadata:                        # Metadaten des Objekts
+  name: fastapi-k8-service       # Name des Services
+  labels:                        # Labels, um den Service zu identifizieren
+    app: fastapi-k8              # Label für die Anwendung
+spec:                            # Spezifikation des Services
+  selector:                      # Selektor, um die Pods zu identifizieren, auf die der Service verweisen soll
+    app: fastapi-k8              # Label für die Anwendung
+  ports:                         # Port-Konfiguration für den Service
+  - protocol: TCP                # Protokoll für die Kommunikation (TCP)
+    port: 8000                   # Port des Services (auf den der Service von außen zugreift)
+    targetPort: 8000             # Zielport auf den Pods (der Port, auf dem die Anwendung läuft)
+    nodePort: 30000              # NodePort (der Port, über den der Service von außen zugänglich gemacht wird)
+  type: NodePort                 # Typ des Services (NodePort bedeutet, dass der Service über einen Port auf jedem Kubernetes-Knoten zugänglich ist)

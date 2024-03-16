@@ -1,23 +1,22 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: couchdb-k8-deployment
-  labels:
-    app: couchdb-k8
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: couchdb-k8
-  template:
-    metadata:
-      labels:
-        app: couchdb-k8
-    spec:
-      containers:
-      - name: my-couchdb-app-container
-        image: my-couchdb-app:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 5984
-
+apiVersion: apps/v1                # API-Version des Objekts (v1 für Kubernetes API-Version 1)
+kind: Deployment                   # Art des Objekts (Deployment)
+metadata:                          # Metadaten des Objekts
+  name: couchdb-k8-deployment      # Name des Deployments
+  labels:                          # Labels, um das Deployment zu identifizieren
+    app: couchdb-k8                # Label für die Anwendung
+spec:                              # Spezifikation des Deployments
+  replicas: 1                      # Anzahl der Replikate, die erstellt werden sollen. In diesem Fall nur ein Replikat.
+  selector:                        # Selektor, um die Replikate zu identifizieren
+    matchLabels:                   # Labels, nach denen die Pods ausgewählt werden
+      app: couchdb-k8              # Label für die Anwendung
+  template:                        # Vorlage für die Pods
+    metadata:                      # Metadaten der Pod-Vorlage
+      labels:                      # Labels für die Pods
+        app: couchdb-k8            # Label für die Anwendung
+    spec:                          # Spezifikation der Pod-Vorlage
+      containers:                  # Container-Spezifikation für die Pods
+      - name: my-couchdb-app-container  # Name des Containers
+        image: my-couchdb-app:latest  # Docker-Image für den Container
+        imagePullPolicy: IfNotPresent  # Pull-Policy für das Image (Wenn nicht vorhanden, ziehe das Image)
+        ports:                     # Port-Konfiguration für den Container
+        - containerPort: 5984      # Der Port, auf dem der Container lauscht (CouchDB-Port)
