@@ -1,5 +1,8 @@
 # Verteilte-Systeme-Birthday-Abgabe
 
+Die Abgabe ist auch in der folgenden Repository zu finden:
+https://github.com/Mehmet1700/Verteilte-Systeme-Birthday-Abgabe
+
 Dies ist die Abgabe für das Projekt "Verteilte Systeme". Es handelt sich um eine REST-API, die mit FastAPI und CouchDB realisiert wurde. Die API ermöglicht es, Daten in einer CouchDB abzurufen.
 Die Abgabe ist in drei Teile unterteilt:
 1. Auführung lokal
