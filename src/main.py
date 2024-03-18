@@ -6,7 +6,8 @@ import requests
 from fastapi.responses import HTMLResponse
 
 
-#Da wir die Konfigurationsvariablen in Docker und Kubernetes extern holen, müssen wir eine Exception werfen, da die Variablen nicht aus der config.py-Datei importiert werden können.
+#Da wir die Konfigurationsvariablen in Docker und Kubernetes extern holen, müssen wir eine Exception werfen,
+# da die Variablen nicht aus der config.py-Datei importiert werden können.
 try: 
     from config import COUCHDB_HOST, COUCHDB_PORT, COUCHDB_USERNAME, COUCHDB_PASSWORD
 except ImportError as e:
@@ -15,8 +16,8 @@ except ImportError as e:
     COUCHDB_PORT = os.getenv('COUCHDB_PORT')
     COUCHDB_USERNAME = os.getenv('COUCHDB_USERNAME')
     COUCHDB_PASSWORD = os.getenv('COUCHDB_PASSWORD')
-    # Debugging-Anweisung
-    print( COUCHDB_HOST, COUCHDB_PORT, COUCHDB_USERNAME, COUCHDB_PASSWORD)
+    # Debugging-Anweisung zum Überprüfen der Umgebungsvariablen
+    #print( COUCHDB_HOST, COUCHDB_PORT, COUCHDB_USERNAME, COUCHDB_PASSWORD)
 
 app = FastAPI()
 
@@ -74,7 +75,7 @@ async def get_data(month: int = Query(..., description="Month (1-12)", ge=1, le=
         print("Response received:", response)  # Debugging-Anweisung
 
 
-        if response.status_code == 200:
+        if response.status_code == 200: # Erfolgreiche Anfrage
             if response.json()['docs']:
                 return response.json()['docs']
             else:
@@ -84,12 +85,12 @@ async def get_data(month: int = Query(..., description="Month (1-12)", ge=1, le=
         else:
             raise HTTPException(status_code=response.status_code, detail="Failed to retrieve data")
     except requests.exceptions.Timeout:
-        raise HTTPException(status_code=408, detail="Request to CouchDB timed out")
+        raise HTTPException(status_code=408, detail="Request to CouchDB timed out") # Timeout
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) # Allgemeiner Fehler des Servers
     
 
     # Route für den Health Endpoint
 @app.get("/health")
 async def health_check():
-    return {"status": "Microservice is running smoothly!"}
+    return {"status": "Microservice is running smoothly!"} # Erfolgreiche Antwort für den Health-Check

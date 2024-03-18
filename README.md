@@ -186,9 +186,7 @@ docker load -i fastapi.tar
 docker load -i couchdb.tar
 ```
 
-
-
-Im Anschluss sollte wieder überprüft werden, ob das laden funktioniert hat. 
+Im Anschluss sollte wieder überprüft werden, ob das laden funktioniert hat mit dem vorherigen Befehl docker images.
 
 
 Das Deployment kann nun unter folgender URL erreicht werden:
