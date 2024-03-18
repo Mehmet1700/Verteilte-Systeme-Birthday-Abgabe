@@ -16,7 +16,7 @@ spec:                              # Spezifikation des Deployments
     spec:                          # Spezifikation der Pod-Vorlage
       containers:                  # Container-Spezifikation für die Pods
       - name: my-couchdb-app-container  # Name des Containers
-        image: my-couchdb-app:latest  # Docker-Image für den Container
-        imagePullPolicy: IfNotPresent  # Pull-Policy für das Image (Wenn nicht vorhanden, ziehe das Image)
+        image: my-couchdb-app:latest  # Docker-Image für den Container.
+        imagePullPolicy: Never  # Pull-Policy für das Image (Wenn nicht vorhanden, ziehe das Image)
         ports:                     # Port-Konfiguration für den Container
         - containerPort: 5984      # Der Port, auf dem der Container lauscht (CouchDB-Port)

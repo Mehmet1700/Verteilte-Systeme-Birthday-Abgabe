@@ -5,7 +5,7 @@ metadata:            # Metadaten des Objekts
   labels:            # Labels, um das Deployment zu identifizieren
     app: fastapi-k8  # Label für die Anwendung
 spec:                # Spezifikation des Deployments
-  replicas: 1        # Anzahl der Replikate, die erstellt werden sollen
+  replicas: 1        # Anzahl der Replikate, die erstellt werden sollen. Hier nur ein Replikat. 
   selector:          # Selektor, um die Replikate zu identifizieren
     matchLabels:     # Labels, nach denen die Pods ausgewählt werden
       app: fastapi-k8  # Label für die Anwendung
@@ -17,7 +17,7 @@ spec:                # Spezifikation des Deployments
       containers:    # Container-Spezifikation für die Pods
       - name: fastapi-k8-container  # Name des Containers
         image: my-fastapi-app:latest  # Docker-Image für den Container
-        imagePullPolicy: IfNotPresent  # Pull-Policy für das Image
+        imagePullPolicy: Never  # Pull-Policy für das Image. Hier wird das lokale Image verwendet
         ports:       # Port-Konfiguration für den Container
         - containerPort: 8000  # Der Port, auf dem der Container lauscht
         env:         # Umgebungsvariablen für den Container

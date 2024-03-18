@@ -60,7 +60,7 @@ Der FastAPI-Microservice kann nun gestartet werden und mit der CouchDB kommunizi
 Der Microservice kann nun gestartet werden. Hierzu muss zuerst in den obersten Ordner des Projekts navigiert werden:
 
 ```bash
-cd ..
+cd ...
 ```
 
 ```bash
@@ -86,11 +86,16 @@ Die Anwendung hat eine HTML-Oberfläche bekommen, um die Übersichtlichkeit zu g
 Es beinhaltet eine Tabelle, welche die abgefragten Daten anzeigt. Desweiteren gibt es ein Formular, um die Daten abzufragen. Sowie einen Button, um den Status der API abzufragen. Diese Funktionalitäten könnten theoretisch auch über einen Curl Befehl abgefragt werden, allerdings ist eine HTML-Oberfläche übersichtlicher und einfacher zu bedienen. Desweiteren wurde eine config.py Datei erstellt, um die Konfigurationen der Anwendung zu speichern. Dadurch wurden wichtige Variablen aus der main.py Datei entfernt und in die config.py Datei verschoben. In dem Code wurde eine If-Abfrage implementiert, welche überprüft, ob die config.py zur Verfügung steht. Der Grund hierfür ist, dass die config.py Datei nicht in einem DockerImage enthalten sein soll, um wichtige Passwörter zu schützen. Deshalb ist die config.py im '.Dockerignore' enthalten, damit sie nicht in das Dockerimage eingefügt wird. Wenn die config.py nicht zur Verfügung steht, wird die Anwendung trotzdem gestartet, aber es werden Environment Variablen aus dem Dockerfile bzw. Docker-Compose-File verwendet. Bei Kubernetes gilt das gleiche, wobei hier die Environment Variablen in einer secret.yml Datei gespeichert werden. Dadurch ist die Gewährleistung der 12-Faktor-Apps möglich. 
 
 ## Ausführung in einem Docker-Container
-Im nächsten Schritt wird die Anwendung in einem Docker-Container ausgeführt. Hierzu muss der Code in ein Docker-Image gebaut werden. Hierzu gibt es ein Dockerfile, welches sich im Projektordner befindet.
+Im nächsten Schritt wird die Anwendung in einem Docker-Container ausgeführt. Hierzu muss der Code in ein Docker-Image gebaut werden. Hierzu gibt es ein Dockerfile, welches sich im Projektordner befindet. Es ist zu empfehlen, dass die vorherige CouchDB gestoppt wird, da die Anwendung eine eigene CouchDB als Docker-Container startet. Außerdem sollte die Anwendung gestoppt werden, da der Port 8000 bereits von der Anwendung verwendet wird.
 ### Voraussetzungen
 Das Dockerfile ist der Bauplan, um das entsprechende Docker-Image zu bauen. Im Dockerfile ist eine Beschreibung des Images enthalten. Darüber hinaus wird die CouchDB als Docker-Container benötigt, um eine Datenbank zur Verfügung zu stellen. Theoretisch ist es möglich, dass beide Images einzeln gebaut werden (Docker build) und dann seperat gestartet werden (Docker run). Allerdings ist es einfacher, wenn beide Images in einem Docker-Compose-File gebaut und gestartet werden. Hierzu wurde ein Docker-Compose-File erstellt, welches sich im Projektordner befindet.
 Das Docker-Compose-File beschreibt, wie die Container gestartet werden sollen. Es beschreibt die Abhängigkeiten und die Konfiguration der Container.
 ### Ausführung
+Das bauen des Docker-Images kann mit folgendem Befehl erreicht werden:
+```bash
+docker build -t my-fastapi-app .
+```
+
 Die Docker-Compose-File wird mit folgendem Befehl gestartet, welches den Zusatz --build enthält, um alle enthaltenen Images neu zu bauen und zu starten:
 ```bash
 docker-compose up --build
@@ -154,6 +159,37 @@ kubectl apply -f deployment/fastapi-k8-secret.yml
 kubectl apply -f deployment/couchdb-k8-deployment.yml
 kubectl apply -f deployment/couchdb-k8-service.yml
 ```
+
+Es kann vorkommen, dass bei anderen Kubernetes Clustern wie Kind oder minikube das laden der Images aus Docker erfolgen muss.
+Dies ist z.B. der Fall, wenn Fehler wie "ImagePullBackOff" oder "ErrImagePull" auftreten. 
+Hierzu kann folgender Befehl genutzt werden:
+```bash
+eval $(minikube docker-env)
+```
+Im Anschluss kann das Image überprüft werden mit dem Befehl:
+```bash
+docker images
+```
+
+Falls es immernoch nicht auftaucht, können die einzelnen Images mit folgendem Befehl geladen werden:
+```bash
+docker load -i <image.tar>
+```
+Für Minikube kann folgender Befehl genutzt werden:
+```bash
+minikube image load <image>
+```
+
+Für unsere Images sieht das wie folgt aus:
+```bash
+docker load -i fastapi.tar
+docker load -i couchdb.tar
+```
+
+
+
+Im Anschluss sollte wieder überprüft werden, ob das laden funktioniert hat. 
+
 
 Das Deployment kann nun unter folgender URL erreicht werden:
 ```bash
