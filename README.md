@@ -1,9 +1,34 @@
 # Verteilte-Systeme-Birthday-Abgabe
 
-Die Abgabe ist auch in der folgenden Repository zu finden:
+Die Abgabe ist auch in der folgenden Repository zu finden und klonbar:
 https://github.com/Mehmet1700/Verteilte-Systeme-Birthday-Abgabe
 
-Dies ist die Abgabe für das Projekt "Verteilte Systeme". Es handelt sich um eine REST-API, die mit FastAPI und CouchDB realisiert wurde. Die API ermöglicht es, Daten in einer CouchDB abzurufen.
+Immatrikulationsnummer: 9948958
+
+### Einleitung
+Dieses Projekt "Verteilte-Systeme-Birthday-Abgabe" ist eine REST-API, die mit FastAPI und CouchDB realisiert wurde. Es wurde im Rahmen des Kurses "Verteilte Systeme" entwickelt, um die Konzepte der verteilten Systeme praktisch anzuwenden. Die API ermöglicht es, Daten in einer CouchDB abzurufen und bietet eine benutzerfreundliche Schnittstelle für die Interaktion mit der Datenbank.
+
+### Projektziel
+Das Hauptziel dieses Projekts besteht darin, eine skalierbare und leicht zu verwendende REST-API zu entwickeln, die es Benutzern ermöglicht, auf Daten in einer verteilten Datenbank zuzugreifen.
+
+Darüber hinaus möchten wir die Prinzipien der Microservice-Architektur und der Containerisierung mit Docker und Kubernetes demonstrieren. Durch die Bereitstellung der Anwendung in verschiedenen Umgebungen möchten wir die Portabilität und Skalierbarkeit unserer Lösung zeigen.
+
+### Architekturübersicht
+Die Architektur dieses Systems basiert auf einer Microservice-Architektur, bei der verschiedene Komponenten isoliert voneinander entwickelt, bereitgestellt und skaliert werden können. Die Hauptkomponenten umfassen:
+
+FastAPI-Service: Dieser Microservice ist die zentrale Schnittstelle für die Benutzerinteraktion. Er ist verantwortlich für die Verarbeitung von HTTP-Anfragen und -Antworten sowie für die Kommunikation mit der Datenbank. FastAPI wurde gewählt, um eine schnelle und benutzerfreundliche API zu erstellen, die auf modernen Python-Features wie Typüberprüfungen und asynchronen Operationen basiert.
+
+CouchDB-Datenbank: CouchDB wird als die persistente Datenbank für das System verwendet. Sie speichert die Daten in einem dokumentbasierten Format und bietet eine RESTful API für den Zugriff auf die Daten. CouchDB wurde aufgrund ihrer Einfachheit, Flexibilität und Skalierbarkeit gewählt.
+
+Zusätzlich zu diesen Hauptkomponenten können weitere Hilfskomponenten oder Werkzeuge verwendet werden, um das System zu unterstützen, wie z.B.:
+
+Docker: Docker wird verwendet, um die Anwendung und ihre Abhängigkeiten in isolierten Containern zu verpacken, was die Portabilität und Konsistenz der Bereitstellung verbessert. Jeder Microservice wird als Docker-Container ausgeführt, was die Skalierbarkeit und die Wartung des Systems erleichtert.
+
+Kubernetes: Kubernetes wird verwendet, um die Docker-Container zu orchestrieren und zu verwalten. Es bietet Funktionen wie automatische Skalierung, Lastenausgleich und automatische Wiederherstellung im Falle von Ausfällen. Durch die Verwendung von Kubernetes können wir eine hochverfügbare und skalierbare Infrastruktur für unsere Anwendung bereitstellen.
+
+Diese Architektur ermöglicht eine einfache Skalierung und Wartung des Systems, da die einzelnen Komponenten unabhängig voneinander entwickelt, bereitgestellt und skaliert werden können. Durch die Verwendung von bewährten Technologien wie FastAPI, CouchDB, Docker und Kubernetes streben wir nach einer robusten und zuverlässigen Lösung für verteilte Systeme.
+
+
 Die Abgabe ist in drei Teile unterteilt:
 1. Auführung lokal
 2. Ausführung in einem Docker-Container
