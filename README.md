@@ -37,9 +37,9 @@ Die Abgabe ist in drei Teile unterteilt:
 
 ## Lokale Ausführung
 ### Voraussetzungen
-Zuerst wird empfohlen eine virtuelle Umgebung zu erstellen, um die Abhängigkeiten zu installieren. Hierzu kann pipenv verwendet werden. 
+Zuerst wird empfohlen, eine virtuelle Umgebung zu erstellen, um die Abhängigkeiten zu installieren. Hierzu kann pipenv verwendet werden. 
 
-Dies kann mit folgendem Befehl i nder Konsole erreicht werden:
+Dies kann mit folgendem Befehl in der Konsole erreicht werden:
 ```bash
 pipenv install
 ```
@@ -54,12 +54,12 @@ Nun müssen die Requirements installiert werden, welche in der Datei `requiremen
 pip install -r requirements.txt
 ```
 
-Es ist auch möglich die Abhängigkeiten in der Pipfile zu installieren:
+Es ist auch möglich, die Abhängigkeiten in der Pipfile zu installieren:
 ```bash
 pipenv install
 ```
 
-Wir benötigen die CouchDB Datenbank, damit die Anwendung lokal funktionieren kann. 
+Wir benötigen die CouchDB-Datenbank, damit die Anwendung lokal funktionieren kann. 
 Die CouchDB Datenbank wurde als Docker Container bereitsgestellt, weshalb wir vorher die CouchDB als Docker Container starten müssen. 
 Die CouchDB Datenbank muss als Image gebaut werden. Die Dockerfile befindet sich im Ordner "Couch-DB".
 Der Pfade muss zuerst in den Ordner "Couch-DB/ContainerImage" geändert werden.
@@ -121,11 +121,18 @@ Das bauen des Docker-Images kann mit folgendem Befehl erreicht werden:
 docker build -t my-fastapi-app .
 ```
 
+Das Docker-Image kann mit folgendem Befehl gestartet werden, allerdings wird die Docker-Compose-File bevorzugt:
+```bash
+docker run -d -p 8000:8000 --env-file .env --name myfastapi my-fastapi-app
+```
+
+Beim Aufrufen der Website wird ein Fehler auftreten, da die my-fastapi-app nicht mit der CouchDB kommunizieren kann.
+Es besteht kein Netzwerk zwischen den beiden Containern. Dies ist der Grund, warum die Docker-Compose-File bevorzugt wird. Ein manuelles Netzwerk kann auch erstellt werden, allerdings ist es einfacher, wenn die Docker-Compose-File verwendet wird.
+
 Die Docker-Compose-File wird mit folgendem Befehl gestartet, welches den Zusatz --build enthält, um alle enthaltenen Images neu zu bauen und zu starten:
 ```bash
 docker-compose up --build
 ```
-
 
 Die FASTAPI Anwendung kann nun unter folgender URL erreicht werden:
 ```bash
@@ -163,7 +170,6 @@ http://localhost:8000/docs
 ```
 ### Erklärung
 Die Docker-Compose-File wurde so konfiguriert, dass die Anwendung und die Datenbank gestartet werden. Die Anwendung ist von der Datenbank abhängig, weshalb die Anwendung erst gestartet wird, wenn die Datenbank gestartet wurde. Die Konfigurationen der Environment wurde in einer .env-Datei gespeichert. Die .env-Datei wird von der Docker-Compose-File gelesen und die Variablen werden in den Containern gesetzt. Wir benötigen diese, da wird die config.py nicht in das Image einlesen.  
-
 
 ## Ausführung in einem Kubernetes-Cluster
 Im letzten Schritt wird die Anwendung in einem Kubernetes-Cluster ausgeführt.
@@ -213,7 +219,6 @@ docker load -i couchdb.tar
 
 Im Anschluss sollte wieder überprüft werden, ob das laden funktioniert hat mit dem vorherigen Befehl docker images.
 
-
 Das Deployment kann nun unter folgender URL erreicht werden:
 ```bash
 http://localhost:30000
@@ -236,6 +241,39 @@ kubectl delete service --all
 kubectl delete configmap --all
 kubectl delete secret --all
 ```
+
+### Troubleshooting
+Folgende Befehle können genutzt werden, um die Logs der Pods zu überprüfen:
+```bash
+kubectl get pods
+kubectl logs <pod-name>
+kubectl describe pod <pod-name>
+```
+
+Folgender Befehl kann genutzt werden, um die Services zu überprüfen:
+```bash
+kubectl get services
+kubectl describe service <service-name>
+```
+
+Folgender Befehl kann genutzt werden, um die Deployments zu überprüfen:
+```bash
+kubectl get deployments
+kubectl describe deployment <deployment-name>
+```
+
+Folgender Befehl kann genutzt werden, um die ConfigMaps zu überprüfen:
+```bash
+kubectl get configmaps
+kubectl describe configmap <configmap-name>
+```
+
+Folgender Befehl kann genutzt werden, um die Secrets zu überprüfen:
+```bash
+kubectl get secrets
+kubectl describe secret <secret-name>
+```
+
 
 ### Erklärung
 Die Konfigurationen wurden in den entsprechenden Dateien gespeichert. Die Environment Variablen wurden in einer secret.yml Datei gespeichert. Die secret.yml Datei wurde in das Kubernetes-Cluster geladen. Die Anwendung wurde in einem Deployment gestartet und der Service wurde als Nodeport konfiguriert. Die CouchDB wurde ebenfalls in einem Deployment gestartet und der Service wurde als Nodeport konfiguriert. Die ConfigMap wurde für die Konfiguration der Anwendung verwendet. Die einzelnen Konfigurationen wurden mit Kommentaren versehen, um die Funktionalität zu erklären.
