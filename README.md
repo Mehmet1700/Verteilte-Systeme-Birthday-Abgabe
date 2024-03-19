@@ -239,3 +239,10 @@ kubectl delete secret --all
 
 ### Erklärung
 Die Konfigurationen wurden in den entsprechenden Dateien gespeichert. Die Environment Variablen wurden in einer secret.yml Datei gespeichert. Die secret.yml Datei wurde in das Kubernetes-Cluster geladen. Die Anwendung wurde in einem Deployment gestartet und der Service wurde als Nodeport konfiguriert. Die CouchDB wurde ebenfalls in einem Deployment gestartet und der Service wurde als Nodeport konfiguriert. Die ConfigMap wurde für die Konfiguration der Anwendung verwendet. Die einzelnen Konfigurationen wurden mit Kommentaren versehen, um die Funktionalität zu erklären.
+
+## Quellen
+
+https://docs.docker.com/
+https://kubernetes.io/docs/home/
+https://fastapi.tiangolo.com/
+https://docs.couchdb.org/en/stable/
